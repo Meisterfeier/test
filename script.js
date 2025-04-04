@@ -100,12 +100,25 @@ function spinWheel() {
 document.addEventListener('DOMContentLoaded', function () {
   const spinButton = document.getElementById('spin-button');
 
-
   spinButton.addEventListener('click', function() {
     console.log("Button wurde geklickt");
     spinWheel();
   });
 });
+
+// Simulation der Drehung ohne echte Animation
+function simulateSpin() {
+  // Zufällige Drehung zwischen 0 und 360 Grad generieren
+  const randomSpin = Math.floor(Math.random() * 360) + 3600; // mindestens 10 vollständige Umdrehungen
+  const effectiveAngle = (randomSpin % 360);  // Der "effektive" Winkel, der für das Ergebnis verwendet wird
+  
+  // Bestimme das Ergebnis basierend auf dem Winkel
+  for (let segment of segments) {
+    if (effectiveAngle >= segment.min && effectiveAngle < segment.max) {
+      return segment.value;
+    }
+  }
+}
 
 // Test 1.000.000 Drehungen simulieren
 function testSpins(numSpins) {
