@@ -106,3 +106,32 @@ document.addEventListener('DOMContentLoaded', function () {
     spinWheel();
   });
 });
+
+// Test 1.000.000 Drehungen simulieren
+function testSpins(numSpins) {
+  const resultCounts = {
+    "5": 0,
+    "10": 0,
+    "20": 0,
+    "50": 0,
+    "100": 0,
+    "200": 0,
+    "1000": 0,
+    "10000": 0
+  };
+
+  // Simulation der angegebenen Anzahl an Drehungen
+  for (let i = 0; i < numSpins; i++) {
+    const result = simulateSpin();
+    resultCounts[result]++;
+  }
+
+  // Ausgabe der Häufigkeit jedes Ergebnisses
+  console.log("Ergebnisse nach " + numSpins + " Drehungen:");
+  for (const [key, value] of Object.entries(resultCounts)) {
+    console.log(key + ": " + value + " (Prozent: " + ((value / numSpins) * 100).toFixed(2) + "%)");
+  }
+}
+
+// Teste 1.000.000 Drehungen
+testSpins(1000000);
