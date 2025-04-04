@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glücksrad</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="wheel-container">
+      <!-- Das Glücksrad -->
+      <div class="wheel" id="wheel"></div>
+      <!-- Fester Zeiger (Pointer) -->
+      <div class="pointer"></div>
+    </div>
+    <div class="side-panel">
+      <div class="legend">
+
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #ff8800;"></span> 5
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #e96df7;"></span> 10
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #4242ff;"></span> 20
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #7a039e;"></span> 50
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #039401;"></span> 100
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #00bdfc;"></span> 200
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #f0fc00;"></span> 1.000
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #e81717;"></span> 10.000
+        </div>
+      </div>
+      <div class="result-banner" id="result-banner">Ergebnis: -</div>
+    </div>
+  </div>
+
+  <button class="wheel-btn" onclick="spinWheel()">Drehen</button>
+
+  <div class="result-list-container">
+    <h3>Ergebnisse</h3>
+    <ul id="result-list"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
