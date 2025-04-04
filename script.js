@@ -100,8 +100,6 @@ function spinWheel() {
 document.addEventListener('DOMContentLoaded', function () {
   const spinButton = document.getElementById('spin-button');
 
-  // Prüfen, ob der Button korrekt gefunden wird
-  console.log("Button gefunden:", spinButton);
 
   spinButton.addEventListener('click', function() {
     console.log("Button wurde geklickt");
