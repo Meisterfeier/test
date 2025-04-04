@@ -1,3 +1,4 @@
+console.log("JavaScript ist geladen!");
 // Globale Variable, um die aktuelle Rotation zu speichern
 let currentRotation = 0;
 
@@ -44,19 +45,28 @@ function saveResultToServer(resultValue) {
 // Funktion, um das Glücksrad zu drehen
 function spinWheel() {
   const wheel = document.getElementById('wheel');
-  const spinButton = document.querySelector('.wheel-btn'); // Den Button selektieren
+  const spinButton = document.getElementById('spin-button');
 
-  spinButton.disabled = true; // Button deaktivieren
-  spinButton.textContent = "Dreht..."; // Optional: Text ändern für Feedback
+  // Deaktivieren des Buttons
+  spinButton.disabled = true;
+  spinButton.textContent = "Dreht...";
+  spinButton.style.pointerEvents = 'none';
 
+  console.log("Rad dreht...");
+
+  // Zufällige Drehung generieren
   const randomSpin = Math.floor(Math.random() * 360) + 3600;
   currentRotation += randomSpin;
   wheel.style.transform = 'rotate(' + currentRotation + 'deg)';
-  
+
+  // Nach 4 Sekunden das Ergebnis anzeigen und den Button wieder aktivieren
   setTimeout(() => {
     const effectiveAngle = (360 - (currentRotation % 360)) % 360;
     let resultValue = "";
 
+    console.log("Effektiver Winkel:", effectiveAngle);
+
+    // Bestimme das Ergebnis basierend auf dem Winkel
     for (let segment of segments) {
       if (effectiveAngle >= segment.min && effectiveAngle < segment.max) {
         resultValue = segment.value;
@@ -64,20 +74,37 @@ function spinWheel() {
       }
     }
 
-    const resultBanner = document.getElementById('result-banner');
-    resultBanner.textContent = "Ergebnis: " + resultValue;
+    console.log("Ergebnis:", resultValue);
 
+    // Ergebnisbanner aktualisieren
+    document.getElementById('result-banner').textContent = "Ergebnis: " + resultValue;
+
+    // Ergebnis zur Liste hinzufügen
     const resultList = document.getElementById('result-list');
     const li = document.createElement('li');
     li.textContent = resultValue;
-    resultList.appendChild(li); 
+    resultList.appendChild(li);
 
+    // Ergebnis an den Server senden
     saveResultToServer(resultValue);
 
-    spinButton.disabled = false; // Button wieder aktivieren
-    spinButton.textContent = "Drehen"; // Text zurücksetzen
+    // Button wieder aktivieren
+    spinButton.disabled = false;
+    spinButton.style.pointerEvents = 'auto';
+    spinButton.textContent = "Drehen";
 
-  }, 4000); // entspricht der Transition-Zeit
+    console.log("Button wieder aktiviert");
+  }, 4000);
 }
 
-  
+document.addEventListener('DOMContentLoaded', function () {
+  const spinButton = document.getElementById('spin-button');
+
+  // Prüfen, ob der Button korrekt gefunden wird
+  console.log("Button gefunden:", spinButton);
+
+  spinButton.addEventListener('click', function() {
+    console.log("Button wurde geklickt");
+    spinWheel();
+  });
+});
