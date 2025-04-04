@@ -44,34 +44,40 @@ function saveResultToServer(resultValue) {
 // Funktion, um das Glücksrad zu drehen
 function spinWheel() {
   const wheel = document.getElementById('wheel');
-  // Zufälliger Drehwert: mindestens 3600 Grad plus zusätzlich 0 bis 359 Grad
+  const spinButton = document.querySelector('.wheel-btn'); // Den Button selektieren
+
+  spinButton.disabled = true; // Button deaktivieren
+  spinButton.textContent = "Dreht..."; // Optional: Text ändern für Feedback
+
   const randomSpin = Math.floor(Math.random() * 360) + 3600;
-  currentRotation += randomSpin;  // Hier wird der Drehwert kumulativ zur aktuellen Rotation hinzugefügt
+  currentRotation += randomSpin;
   wheel.style.transform = 'rotate(' + currentRotation + 'deg)';
   
-  // Nach 4 Sekunden (Ende der Transition) das Ergebnis ermitteln:
   setTimeout(() => {
     const effectiveAngle = (360 - (currentRotation % 360)) % 360;
     let resultValue = "";
-    // Bestimme, in welches Segment der effectiveAngle fällt:
+
     for (let segment of segments) {
       if (effectiveAngle >= segment.min && effectiveAngle < segment.max) {
         resultValue = segment.value;
         break;
       }
     }
-    // Ergebnis im Banner anzeigen
+
     const resultBanner = document.getElementById('result-banner');
     resultBanner.textContent = "Ergebnis: " + resultValue;
-    
-    // Ergebnis in die Liste speichern
+
     const resultList = document.getElementById('result-list');
     const li = document.createElement('li');
     li.textContent = resultValue;
     resultList.appendChild(li); 
 
-    // Speichern des Ergebnisses auf dem Server
     saveResultToServer(resultValue);
+
+    spinButton.disabled = false; // Button wieder aktivieren
+    spinButton.textContent = "Drehen"; // Text zurücksetzen
+
   }, 4000); // entspricht der Transition-Zeit
 }
+
   
