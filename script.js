@@ -1,9 +1,10 @@
 console.log("JavaScript ist geladen!");
+
 // Globale Variable, um die aktuelle Rotation zu speichern
 let currentRotation = 0;
+let popupTimeout;
 
 // Mapping der Segmente anhand des Winkels (in Grad)
-// Die Segmente definieren, welche Werte angezeigt werden, wenn das Feld am oberen Rand (0°) liegt.
 const segments = [
   { min: 0, max: 45, value: "5" },
   { min: 45, max: 117, value: "10" },
@@ -15,58 +16,59 @@ const segments = [
   { min: 359, max: 360, value: "10000" }
 ];
 
-// Funktion, um das Ergebnis an den Server zu senden
+// Ergebnis an den Server senden
 function saveResultToServer(resultValue) {
-  const timestamp = new Date().toISOString(); // Erstelle einen Zeitstempel
+  const timestamp = new Date().toISOString();
 
-  // Die Daten, die an den Server geschickt werden sollen
   const data = {
-    result: resultValue,  // Das Ergebnis des Glücksrads
-    timestamp: timestamp  // Der aktuelle Zeitstempel
+    result: resultValue,
+    timestamp: timestamp
   };
 
-  // Sende die Daten per HTTP POST an das PHP-Skript (save-result.php)
-  fetch('save-result.php', {  // Das PHP-Skript, das die Daten empfängt
+  fetch('save-result.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',  // Gib an, dass die Daten im JSON-Format gesendet werden
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),  // Wandelt die Daten in einen JSON-String um
+    body: JSON.stringify(data),
   })
-  .then(response => response.json())  // Die Antwort als JSON verarbeiten
-  .then(data => {
-    console.log('Ergebnis erfolgreich gespeichert:', data);
-  })
-  .catch((error) => {
-    console.error('Fehler beim Speichern des Ergebnisses:', error);
-  });
+    .then(response => response.json())
+    .then(data => {
+      console.log('Ergebnis erfolgreich gespeichert:', data);
+    })
+    .catch((error) => {
+      console.error('Fehler beim Speichern des Ergebnisses:', error);
+    });
 }
 
-// Funktion, um das Glücksrad zu drehen
+// Glücksrad drehen
 function spinWheel() {
   const wheel = document.getElementById('wheel');
   const spinButton = document.getElementById('spin-button');
+  const popup = document.getElementById('popup-result');
 
-  // Deaktivieren des Buttons
+  // Verstecke das Popup, wenn der Button erneut gedrückt wird und lösche vorherigen Timeout (zur Sicherheit)
+   popup.classList.remove('show');
+   if (popupTimeout) {
+    clearTimeout(popupTimeout); // alten Timeout abbrechen
+  }
+	
   spinButton.disabled = true;
   spinButton.textContent = "Dreht...";
   spinButton.style.pointerEvents = 'none';
 
   console.log("Rad dreht...");
 
-  // Zufällige Drehung generieren
   const randomSpin = Math.floor(Math.random() * 360) + 3600;
   currentRotation += randomSpin;
   wheel.style.transform = 'rotate(' + currentRotation + 'deg)';
 
-  // Nach 4 Sekunden das Ergebnis anzeigen und den Button wieder aktivieren
   setTimeout(() => {
     const effectiveAngle = (360 - (currentRotation % 360)) % 360;
     let resultValue = "";
 
     console.log("Effektiver Winkel:", effectiveAngle);
 
-    // Bestimme das Ergebnis basierend auf dem Winkel
     for (let segment of segments) {
       if (effectiveAngle >= segment.min && effectiveAngle < segment.max) {
         resultValue = segment.value;
@@ -76,7 +78,7 @@ function spinWheel() {
 
     console.log("Ergebnis:", resultValue);
 
-    // Ergebnisbanner aktualisieren
+    // Ergebnis im Banner anzeigen
     document.getElementById('result-banner').textContent = "Ergebnis: " + resultValue;
 
     // Ergebnis zur Liste hinzufügen
@@ -85,7 +87,31 @@ function spinWheel() {
     li.textContent = resultValue;
     resultList.appendChild(li);
 
-    // Ergebnis an den Server senden
+    // Liste automatisch nach unten scrollen
+    resultList.scrollTop = resultList.scrollHeight;
+	  
+	 // Ergebnis als Pop-up anzeigen; Timeout sicher setzen; hier mit quick fix mit manuellem Euro Zeichen das sollte noch geändert werden sodass die eurozeichen auch zum Ergebnis gehören
+	popup.textContent = "🎉" + resultValue + " €"; 
+	popup.classList.add('show');
+
+	// Nach 5 Sekunden wieder ausblenden
+	setTimeout(() => {
+  	popup.classList.remove('show');
+	}, 5000);
+
+	// Konfetti anzeigen, wenn das Ergebnis 50, 100 oder 200 ist
+    if (resultValue === "50" || resultValue === "100" || resultValue === "200") {
+    // Konfetti generieren
+    confetti({
+      particleCount: 200, // Anzahl der Konfetti-Teilchen
+      spread: 70, // Winkel der Streuung
+      origin: { x: 0.5, y: 0.5 }, // Mitte des Bildschirms
+      colors: ['#ff8800', '#e96df7', '#4242ff', '#7a039e', '#039401', '#00bdfc', '#f0fc00', '#e81717'], // Farben der Konfetti
+      scalar: 1.2 // Größe der Konfetti
+    });
+    }
+
+    // Ergebnis an Server senden
     saveResultToServer(resultValue);
 
     // Button wieder aktivieren
@@ -97,10 +123,11 @@ function spinWheel() {
   }, 4000);
 }
 
+// "Drehen"-Button initialisieren
 document.addEventListener('DOMContentLoaded', function () {
   const spinButton = document.getElementById('spin-button');
 
-  spinButton.addEventListener('click', function() {
+  spinButton.addEventListener('click', function () {
     console.log("Button wurde geklickt");
     spinWheel();
   });
@@ -108,11 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Simulation der Drehung ohne echte Animation
 function simulateSpin() {
-  // Zufällige Drehung zwischen 0 und 360 Grad generieren
-  const randomSpin = Math.floor(Math.random() * 360) + 3600; // mindestens 10 vollständige Umdrehungen
-  const effectiveAngle = (randomSpin % 360);  // Der "effektive" Winkel, der für das Ergebnis verwendet wird
-  
-  // Bestimme das Ergebnis basierend auf dem Winkel
+  const randomSpin = Math.floor(Math.random() * 360) + 3600;
+  const effectiveAngle = (randomSpin % 360);
+
   for (let segment of segments) {
     if (effectiveAngle >= segment.min && effectiveAngle < segment.max) {
       return segment.value;
@@ -133,18 +158,16 @@ function testSpins(numSpins) {
     "10000": 0
   };
 
-  // Simulation der angegebenen Anzahl an Drehungen
   for (let i = 0; i < numSpins; i++) {
     const result = simulateSpin();
     resultCounts[result]++;
   }
 
-  // Ausgabe der Häufigkeit jedes Ergebnisses
   console.log("Ergebnisse nach " + numSpins + " Drehungen:");
   for (const [key, value] of Object.entries(resultCounts)) {
     console.log(key + ": " + value + " (Prozent: " + ((value / numSpins) * 100).toFixed(2) + "%)");
   }
 }
 
-// Teste 1.000.000 Drehungen
+// Testdurchlauf starten
 testSpins(1000000);
