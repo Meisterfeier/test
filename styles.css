@@ -1,181 +1,205 @@
+
 /* Grundlegende Styles */
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #b4e3fa;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  overflow-x: hidden; /* Verhindert horizontales Scrollen */
-  font-size: 16px; /* Basis-Schriftgröße */
-}
-
-/* Hauptcontainer */
-.container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
-
-/* Glücksrad-Container */
-.wheel-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%; /* Volle Breite */
-  max-width: 600px; /* Maximale Größe */
-  position: relative;
-  margin: 0 auto; /* Zentriert */
-}
-
-/* Glücksrad */
-.wheel {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  aspect-ratio: 1 / 1; /* Hält das Rad quadratisch */
-  border-radius: 50%;
-  border: 5px solid black; /* Schwarze Umrandung */
-  background: conic-gradient(
-    #ff8800 0deg 45deg,         /* 5 Orange (45°) */
-    #e96df7 45deg 117deg,       /* 10 Pink (72°) */
-    #4242ff 117deg 207deg,      /* 20 Blau (90°) */
-    #7a039e 207deg 279deg,      /* 50 Lila (72°) */
-    #039401 279deg 328deg,      /* 100 Grün (49°) */
-    #00bdfc 328deg 353deg,      /* 200 Hellblau (25°) */
-    #f0fc00 353deg 358deg,      /* 1000 Gelb (5°) */
-    #e81717 359deg 360deg       /* 10000 Rot (1°) */
-  );
-  transition: transform 4s ease-out;
-}
-
-/* Zeiger */
-.pointer {
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 30px solid grey;
-  z-index: 2;
-}
-
-/* Dreh-Button direkt unter das Rad setzen */
-.wheel-btn {
-  padding: 15px 30px;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  text-align: center;
-  transition: background-color 0.3s, opacity 0.3s; /* Füge Transition hinzu */
-}
-
-/* Deaktivierter Zustand des Buttons */
-.wheel-btn:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-  opacity: 0.6;
-  pointer-events: none; /* Verhindert Klicks */
-}
-
-/* Side Panel */
-.side-panel {
-  margin-top: 20px;
-  text-align: left; /* Links ausgerichtet */
-  width: 100%;
-  max-width: 300px;
-}
-
-/* Legende */
-.legend {
-  margin-bottom: 15px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Links ausgerichtet */
-  margin-bottom: 5px;
-}
-
-.color-box {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  border-radius: 3px;
-}
-
-/* Ergebnis-Banner */
-.result-banner {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #ddd;
-  border: 1px solid #aaa;
-  font-size: 20px;
-  text-align: center;
-  width: 250px;
-}
-
-/* Ergebnis-Liste */
-.result-list-container {
-  width: 100%;
-  max-width: 300px;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.result-list-container h3 {
-  font-size: 22px;
-  margin-bottom: 10px;
-}
-
-#result-list {
-  list-style: none;
-  padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  background: #fff;
-  text-align: left;
-}
-
-#result-list li {
-  padding: 5px 10px;
-  border-bottom: 1px solid #eee;
-}
-
-/* Responsive Anpassungen für mobile Geräte */
-@media (max-width: 768px) {
-  .wheel-container {
-    max-width: 90vw; /* Skaliert das Rad */
-  }
-
-  .wheel {
-    max-width: 90vw;
-  }
-
-  .result-banner {
-    width: 90%;
-  }
-
-  .wheel-btn {
-    width: 90%;
-  }
-
-  .container {
+    display: flex;
     flex-direction: column;
-    align-items: center; /* Zentriert auf mobilen Geräten */
+    align-items: center;
+    background-color: #b4e3fa;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+    font-size: 16px; /* Basis-Schriftgröße */
   }
-}
+  
+  /* Hauptcontainer */
+  .container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  /* Glücksrad-Container */
+  .wheel-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Volle Breite */
+    max-width: 600px; /* Maximale Größe */
+    position: relative;
+    margin: 0 auto; /* Zentriert */
+  }
+  
+  /* Glücksrad */
+  .wheel {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Hält das Rad quadratisch */
+    border-radius: 50%;
+    border: 5px solid black; /* Schwarze Umrandung */
+    background: conic-gradient(
+      #ff8800 0deg 45deg,         /* 5 Orange (45°) */
+      #e96df7 45deg 117deg,       /* 10 Pink (72°) */
+      #4242ff 117deg 207deg,      /* 20 Blau (90°) */
+      #7a039e 207deg 279deg,      /* 50 Lila (72°) */
+      #039401 279deg 328deg,      /* 100 Grün (49°) */
+      #00bdfc 328deg 353deg,      /* 200 Hellblau (25°) */
+      #f0fc00 353deg 358deg,      /* 1000 Gelb (5°) */
+      #e81717 359deg 360deg       /* 10000 Rot (1°) */
+    );
+    transition: transform 4s ease-out;
+  }
+  
+  /* Zeiger */
+  .pointer {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 30px solid grey;
+    z-index: 2;
+  }
+  
+  /* Dreh-Button direkt unter das Rad setzen */
+  .wheel-btn {
+    padding: 15px 30px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    transition: background-color 0.3s, opacity 0.3s; /* Füge Transition hinzu */
+  }
+  
+  /* Deaktivierter Zustand des Buttons */
+  .wheel-btn:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none; /* Verhindert Klicks */
+  }
+  
+  /* Side Panel */
+  .side-panel {
+    margin-top: 20px;
+    text-align: left; /* Links ausgerichtet */
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Legende */
+  .legend {
+    margin-bottom: 15px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Links ausgerichtet */
+    margin-bottom: 5px;
+  }
+  
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 3px;
+  }
+  
+  /* Ergebnis-Banner */
+  .result-banner {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ddd;
+    border: 1px solid #aaa;
+    font-size: 20px;
+    text-align: center;
+    width: 250px;
+  }
+  
+  /* Ergebnis-Liste */
+  .result-list-container {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .result-list-container h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  
+  #result-list {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #fff;
+    text-align: left;
+  }
+  
+  #result-list li {
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  /* Responsive Anpassungen für mobile Geräte */
+  @media (max-width: 768px) {
+    .wheel-container {
+      max-width: 90vw; /* Skaliert das Rad */
+    }
+  
+    .wheel {
+      max-width: 90vw;
+    }
+  
+    .result-banner {
+      width: 90%;
+    }
+  
+    .wheel-btn {
+      width: 90%;
+    }
+  
+    .container {
+      flex-direction: column;
+      align-items: center; /* Zentriert auf mobilen Geräten */
+    }
+  }
+  
+  .popup-result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  
+  .popup-result.show {
+    opacity: 1;
+  }
+  
+  
