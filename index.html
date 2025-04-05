@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -9,10 +10,11 @@
 <body>
   <div class="container">
     <div class="wheel-container">
-      <!-- Das Glücksrad -->
-      <div class="wheel" id="wheel"></div>
-      <!-- Fester Zeiger (Pointer) -->
-      <div class="pointer"></div>
+		<!-- Das Glücksrad -->
+		<div class="wheel" id="wheel"></div>
+		<!-- Fester Zeiger (Pointer) -->
+		<div class="pointer"></div>
+		<div class="popup-result" id="popup-result"></div>
     </div>
     <div class="side-panel">
       <div class="legend">
@@ -52,7 +54,10 @@
     <h3>Ergebnisse</h3>
     <ul id="result-list"></ul>
   </div>
-
+	
+<!-- Externes Confetti-Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+	
 <!-- Externes Script -->
 <script src="script.js" defer></script>
 
