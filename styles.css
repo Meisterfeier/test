@@ -192,7 +192,7 @@ body {
     border-radius: 10px;
     font-size: 24px;
     font-weight: bold;
-    z-index: 10;
+    z-index: 999;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     pointer-events: none;
@@ -201,5 +201,36 @@ body {
   .popup-result.show {
     opacity: 1;
   }
+
+  /* CSS für den Münzregen */
+#coin-rain-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Verhindert, dass der Container das Klicken blockiert */
+  z-index: 998; /* Damit der Münzregen oben bleibt aber nicht vor dem Ergebnis Popup */
+}
+
+.coin {
+  position: absolute;
+  top: -50px; /* Startposition außerhalb des Bildschirms */
+  width: 20px; /* Die Größe der Münze (Anpassbar) */
+  height: 20px; /* Die Größe der Münze (Anpassbar) */
+  animation: coinFall 1,5s linear infinite; /* Hier wurde die Fallzeit auf 1.5s gesetzt; EIGENTLICH MUSS MAN HIER DIE FALLZEIT RAUSNEHMEN DENN SIE PASST NICHT; ABER GANZ RAUS GEHT AUCH NICHT */
+}
+
+@keyframes coinFall {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
   
   
